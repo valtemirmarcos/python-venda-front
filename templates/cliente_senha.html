@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Alterar Senha {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Minha Conta</h1>
+        <div class="row gx-3">
+            <div class="col-4">
+                {% include 'menu_cliente.html' %}
+            </div>
+            <div class="col-8">
+                {% if erro %}
+                    <p>{{erro}}</p>
+                {% endif %}
+                <form action="{{url_for('cliente.clienteConfirmCadastroSenha')}}" method="post" class="col-sm-12 col-md-8 col-lg-6">
+                    <div class="form-floating mb-3">
+                        <input type="password" id="txtSenhaAtual" name="txtSenhaAtual"class="form-control" placeholder=" " autofocus>
+                        <label for="txtSenhaAtual">Digite aqui sua senha atual</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" id="txtSenha" name="txtSenha" class="form-control" placeholder=" ">
+                        <label for="txtSenha">Digite aqui sua nova senha</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" id="txtConfSenha" name="txtConfSenha" class="form-control" placeholder=" ">
+                        <label for="txtConfSenha">Redigite aqui a nova senha</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-danger">Alterar Senha</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

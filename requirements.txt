@@ -1,0 +1,5 @@
+Flask
+watchdog
+requests
+python-dotenv
+Babel

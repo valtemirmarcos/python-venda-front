@@ -1,0 +1,182 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Carrinho {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Carrinho de Compras</h1>
+        <ul class="list-group mb-3">
+            {% if session.get('dados_carrinho') %}
+                {% for idProduto in session['dados_carrinho'] %}
+                    {% set compra_item = idProduto|get_compra %}
+                <li class="list-group-item py-3 item">
+                    <div class="row g-3">
+                        <div class="col-4 col-md-3 col-lg-2">
+                            <a href="#">
+                                <img src="{{ session['dados_carrinho'][idProduto]['fotoCapa'] }}" class="img-thumbnail">
+                            </a>
+                        </div>
+                        <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                            <h4>
+                                <b><a href="#" class="text-decoration-none text-danger">
+                                    {{ session['dados_carrinho'][idProduto]['produto'] }}</a></b>
+                            </h4>
+                            <h5>
+                                {{ session['dados_carrinho'][idProduto]['descricao'] }}
+                            </h5>
+                        </div>
+                        <div
+                            class="col-7 offset-5 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
+                            <div class="input-group">
+                                <button class="btn btn-outline-dark btn-sm remove-qtde" type="button">
+                                    <i class="bi-caret-down" style="font-size: 16px; line-height: 16px;"></i>
+                                </button>
+                                    <input type="text" class="form-control text-center border-dark qtde" value="{{ compra_item.qtde if compra_item else 1 }}">
+                                <button class="btn btn-outline-dark btn-sm add-qtde" type="button">
+                                    <i class="bi-caret-up" style="font-size: 16px; line-height: 16px;"></i>
+                                </button>
+                                <a href="{{url_for('carrinho.carrinhoExcluirItem', idProd=idProduto)}}" class="btn btn-outline-danger border-dark btn-sm pt-2">
+                                    <i class="bi-trash" style="font-size: 16px; line-height: 16px;"></i>
+                                </a>
+                            </div>
+                            <div class="text-end mt-2">
+                                <small class="text-secondary">Valor kg: R$ {{ session['dados_carrinho'][idProduto]['vlvendaReal'] }}</small><br>
+                                <span class="text-dark vlVenda" valor_unitario="{{ session['dados_carrinho'][idProduto]['vlvenda'] }}" valor_total="{{ session['dados_carrinho'][idProduto]['vlvenda'] }}" idProduto="{{idProduto}}">Valor Item: <span class="vlVendaAtual">R$ {{ compra_item.calculado if compra_item else session['dados_carrinho'][idProduto]['vlvendaReal'] }}</span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+                {% endfor %}
+                <li class="list-group-item py-3">
+                    <div class="text-center text-md-end">
+                        <h4 class="text-dark mb-3">
+                            Valor Total:<span id="total_compra"></span>
+                        </h4>
+                        <a href="{{ url_for('produtos.index')}}" class="btn btn-outline-success btn-lg mb-3 mb-sm-0">
+                            Continuar Comprando                            
+                        </a>
+                        <input type="hidden" name="json-js" id="json-js"/>
+                        <button type="button" class="btn btn-danger btn-lg ms-2 mt-xs-3" id="fechar-compra">Fechar Compra</button>
+                            <!-- href="{{ url_for('carrinho.fecharCompra')}}" -->
+                    </div>
+                </li>
+            {% else %}
+                <li class="list-group-item py-3">
+                    <div class="text-center">
+                        <h4 class="text-dark mb-3">Seu carrinho está vazio</h4>
+                        <a href="{{ url_for('produtos.index') }}" class="btn btn-outline-success btn-lg mb-3 mb-sm-0">Continuar Comprando</a>
+                    </div>
+                </li>           
+            {% endif %}
+        </ul>
+    </div>
+</main>
+{% endblock %}
+{% block js %}
+    <script>
+        $(function(){
+            console.log("ok");
+            gerarTotal();
+        });
+        $(document).on('click',".add-qtde",function(evt){
+            evt.preventDefault();
+            evt.stopPropagation();
+            var quantityInput = $(this).closest('.item').find('.qtde').val();
+            if(isNaN(quantityInput) || quantityInput<=0){
+                $(this).closest('.item').find('.qtde').val(1);
+                return ;
+            }
+            var qtde = parseInt(quantityInput)+1;
+            console.log(qtde);
+            calculaIncremento(this, qtde);
+            gerarTotal();
+
+            // console.log(total);
+        });
+        $(document).on('click',".remove-qtde",function(evt){
+            evt.preventDefault();
+            evt.stopPropagation();
+            var quantityInput = $(this).closest('.item').find('.qtde').val();
+            if(isNaN(quantityInput) || quantityInput<=0){
+                $(this).closest('.item').find('.qtde').val(1);
+                console.log("foi")
+                return ;
+            }
+            var qtde = parseInt(quantityInput)-1;
+            calculaIncremento(this, qtde);
+            gerarTotal();
+            
+            console.log(quantityInput);
+        });
+        $(document).on('click', "#fechar-compra", function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        var jsonCarrinho = gerarTotal();
+        console.log(jsonCarrinho);
+
+        $.ajax({
+            url: "http://localhost:5000/carrinho/enviarJson", // Substitua pela sua rota real do Python
+            type: "POST", // Método HTTP (POST para envio de dados)
+            dataType: "json", // Tipo de dado esperado do servidor
+            contentType: "application/json", // Define o Content-Type como JSON
+            data: jsonCarrinho, // Envia a string JSON dos dados do carrinho
+            success: function(response) {
+                // Manipula a resposta de sucesso do servidor (exibir mensagem)
+                console.log("Dados enviados com sucesso!");
+                console.log(response.status); // Opcional: registra a resposta do servidor
+                if (typeof response.status !== "undefined"){
+                    if(response.status=='success'){
+                        console.log(response);
+                        window.location.href = "http://localhost:5000/carrinho/fechar-compra";
+                    }else{
+                        alert("nao foram encontrados itens no carrinho");
+                    }
+                }else{
+                    alert("falha ao fechar a compra");
+                }
+
+            },
+            error: function(error) {
+                // Manipula erros na requisição (exibir mensagem de erro)
+                console.error("Erro ao enviar dados:", error);
+            }
+        });
+    });
+
+    function gerarTotal(){
+        var total = 0;
+        jsonjs = [];
+        $('.vlVenda').each(function(i) {
+            total += parseFloat($(this).attr('valor_unitario')*$(this).closest('.item').find('.qtde').val());
+            jsonjs.push({
+                'idProduto':$(this).attr('idProduto'),
+                'valor_total':parseFloat($(this).attr('valor_total')),
+                'qtde':$(this).closest('.item').find('.qtde').val(),
+                'calculado':parseFloat($(this).attr('valor_unitario')*$(this).closest('.item').find('.qtde').val())
+            });
+        });
+        var saida = {
+            "itens":jsonjs,
+            "total":total
+        }
+        console.log(saida);
+        $("#total_compra").html(valorPtBr(total));
+        return JSON.stringify(saida);
+    }
+        function calculaIncremento(origem, qtde){
+            $(origem).closest('.item').find('.qtde').val(qtde);
+            var valor_unitario = $(origem).closest('.item').find('.vlVenda').attr('valor_unitario');
+            console.log("valor_unitario:"+valor_unitario);
+            console.log("qtde:"+qtde);
+
+            var calculo = valor_unitario*qtde;
+            calculoFormatado = valorPtBr(calculo);
+            vlVendaAtual = $(origem).closest('.item').find('.vlVendaAtual').html(calculoFormatado);
+            var valor_total = $(origem).closest('.item').find('.vlVenda').attr('valor_total',calculo);
+            var idProduto = $(origem).closest('.item').find('.vlVenda').attr('idProduto');
+            // console.log(idProduto);
+        }
+    </script>
+    
+{% endblock %}

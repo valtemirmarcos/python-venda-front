@@ -1,0 +1,39 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Pedidos {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Minha Conta</h1>
+        <div class="row gx-3">
+            <div class="col-4">
+                {% include 'menu_cliente.html' %}
+            </div>
+            <div class="col-8">
+                <form action="">
+                    <div class="form-floating mb-3 col-md-6 col-lg-4">
+                        <input class="form-control" type="text" id="txtCEP" placeholder=" " value="{{dados['cep']}}"  autofocus />
+                        <label for="txtCEP">CEP</label>
+                    </div>
+                    <div class="mb-3 col-md-6 col-lg-8">
+                        <textarea class="form-control text-muted bg-light text" style="height: 58px; font-size: 14px;">{{dados['logradouro']}}</textarea>
+                    </div> 
+                    <div class="form-floating mb-3 col-md-4">
+                        <input class="form-control" type="text" id="txtNumero" placeholder=" " value="{{dados['numero']}}" autofocus />
+                        <label for="txtNumero">Número</label>
+                    </div>
+                    <div class="form-floating mb-3 col-md-8">
+                        <input class="form-control" type="text" id="txtComplemento" placeholder=" " value="{{dados['complemento']}}" autofocus />
+                        <label for="txtComplemento">Complemento</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="text" id="txtReferencia" placeholder=" " value="{{dados['referencia']}}" autofocus />
+                        <label for="txtReferencia">Ponto de Referência</label>
+                    </div>     
+                    <button type="submit" class="btn btn-lg btn-danger">Salvar</button>                      
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Produto {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              {{dados}}
+                <img src="{{dados['fotoCapa']}}" class="img-thumbnail" id="imgProduto">
+                <br class="clearfix">
+                <div class="row my-3 gx-3">
+                    {% for foto in dados['fotos'] %}
+                        <div class="col-3">
+                            <img src="{{foto}}" class="img-thumbnail" onclick="trocarImagem(this)">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <h1>{{dados['produto']}}</h1>
+                <p>{{dados['descricao']}}</p>
+                <div class="container vh-100 d-flex flex-column mt-5">
+                    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+                      <p>
+                        <a href="{{url_for('carrinho.addCarrinho',idProd=dados['id'] )}}" class="btn btn-lg btn-danger mb-3 mb-xxl-0 me-2">
+                          <i class="bi-cart"></i> Adicionar ao Carrinho
+                        </a>
+                        <a href="#" class="btn btn-lg btn-outline-danger">
+                          <i class="bi-heart"></i> Adicionar aos Favoritos
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

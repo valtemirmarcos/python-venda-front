@@ -1,0 +1,96 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Pedidos {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Minha Conta</h1>
+        <div class="row gx-3">
+            <div class="col-4">
+                {% include 'menu_cliente.html' %}
+            </div>
+            <div class="col-8">
+                <form class="row mb-3">
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select">
+                                <option value="30">Últimos 30 dias</option>
+                                <option value="60">Últimos 60 dias</option>
+                                <option value="90">Últimos 90 dias</option>
+                                <option value="180">Últimos 180 dias</option>
+                                <option value="360" selected>Últimos 360 dias</option>
+                                <option value="9999">Todo o período</option>
+                            </select>
+                            <label>Período</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select">
+                                <option value="1" selected>Mais novos primeiro</option>
+                                <option value="2">Mais antigos primeiro</option>
+                            </select>
+                            <label>Ordenação</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="accordion" id="divPedidos">
+                  {% for dado in dados %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#pedido{{dado['nrPedido']}}">
+                                <b>Pedido {{dado['nrPedido']}}</b>
+                                <span class="mx-1">(realizado em {{dado['data']}})</span>
+                            </button>
+                        </h2>
+                        <div id="pedido{{dado['nrPedido']}}" class="accordion-collapse collapse" data-bs-parent="#divPedidos">
+                            <div class="accordion-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th class="text-end">R$ Unit.</th>
+                                            <th class="text-center">Qtde.</th>
+                                            <th class="text-end">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for itemPedido in dado['zitensPedido'] %}
+                                            <tr>
+                                                <td>{{itemPedido['produto']['produto']}}</td>
+                                                <td class="text-end">{{itemPedido['produto']['vlcompra'] | currency}}</td>
+                                                <td class="text-center">{{itemPedido['quantidade'] | numerico}}</td>
+                                                <td class="text-end">{{ itemPedido['produto']['vlcompra'] | multiplicar(itemPedido['quantidade']) | currency }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-end" colspan="3">Valor dos Produtos:</th>
+                                            <td class="text-end">{{dado['valor_total'] | currency}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="3">Valor do Frete:</th>
+                                            <td class="text-end">{{dado['valor_frete'] | currency}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="3">Valor a Pagar:</th>
+                                            <td class="text-end">{{dado['total_com_frete'] | currency}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="3">Forma de Pagamento:</th>
+                                            <td class="text-end">Crédito VISA 1x</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

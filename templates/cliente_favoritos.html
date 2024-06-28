@@ -1,0 +1,45 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Pedidos {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Minha Conta</h1>
+        <div class="row gx-3">
+            <div class="col-4">
+                {% include 'menu_cliente.html' %}
+            </div>
+            <div class="col-8">
+                <div class="row g-3">
+                    {% for dado in dados %}
+                    
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                        <div class="card text-center bg-light">
+                            <a href="{{url_for('cliente.removeFavoritos', produto_id=dado['produto_id'], favoritos=1)}}" class="position-absolute end-0 p-2 text-danger" title="Remover dos favoritos">
+                                <i class="bi-x" style="font-size: 24px; line-height: 24px;"></i>
+                            </a>
+                            <img src="{{ dado['foto'] }}" class="card-img-top" style="width: 200px;height: 200px;">
+                            <div class="card-header">
+                                {{ dado['item']["vlvenda"] | currency }}
+                            </div>
+                            <div class="card-body">
+                              <h5 class="card-title">{{dado['item']["produto"]}}</h5>
+                              <p class="card-text truncar-3l">
+                                    {{dado['item']["descricao"]}}
+                              </p>                              
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{url_for('carrinho.addCarrinho',idProd=dado['produto_id'] )}}" class="btn btn-danger mt-2 d-block">
+                                    Adicionar ao Carrinho
+                                </a>
+                                <small class="text-success">{{dado['item']["estoque"] | numerico}}kg em estoque</small>
+                            </div>
+                          </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

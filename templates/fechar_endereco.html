@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Endereço de Entrega {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Selecione o Endereço de Entrega</h1>
+        <h3 class="mb-4">
+            Selecione o endereço de entrega e clique em <b>Continuar</b> para prosseguir para a <b>seleção da
+                forma de pagamento</b>.
+        </h3>
+        <div class="d-flex justify-content-around flex-wrap border rounded-top pt-4 px-3">
+            {% for endereco in enderecos %}
+                <div class="mb-4 mx-2 flex-even">
+                    <input type="radio" class="btn-check" name="endereco" 
+                        autocomplete="off" id="end1">
+                    <label class="btn btn-outline-danger p-4 h-100 w-100" for="end1">
+                        <h3>
+                            <b class="text-dark">{{endereco["titulo"]}}</b><br>
+                            <hr>
+                            <b>{{endereco["cliente"]["nome_completo"]}}</b><br>
+                            {{endereco["logradouro"]}}, {{endereco["numero"]}}<br>
+                            {{endereco["cidade"]}}-{{endereco["uf"]}}<br>
+                            CEP {{endereco["cep"] | formatar_cep}}
+                        </h3>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-end border border-top-0 rounded-bottom p-4 pb-0">                    
+            <form action="{{url_for('carrinho.fecharCompraAddFrete')}}" method="post">
+                <div class="row">
+                    <div class="col-7"></div>
+                    <div class="col-3">
+                        <div class="form-floating mb-3 text-end">
+                            <input type="text" id="txtFrete" name="txtFrete" class="form-control" placeholder=" " value="{{frete}}" readonly>
+                            <label for="txtFrete" class="text-black-50">0,00</label>                           
+                        </div>
+                        
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-danger btn-lg ms-2 mb-4 mt-2">Calcular Frete</a>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+        <div class="text-end border border-top-0 rounded-bottom p-4 pb-0">                    
+            <a href="{{ url_for('carrinho.fecharCompra')}}" class="btn btn-outline-success btn-lg mb-4">
+                Voltar aos Itens
+            </a>
+            <a href="{{ url_for('carrinho.fecharPagamento')}}" class="btn btn-danger btn-lg ms-2 mb-4">Continuar</a>
+        </div>
+    </div>
+</main>
+{% endblock %}

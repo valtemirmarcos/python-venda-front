@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Pagamentos {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Minha Conta</h1>
+        <div class="row gx-3">
+            <div class="col-4">
+                {% include 'menu_cliente.html' %}
+            </div>
+            <div class="col-8">
+                <form action="">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="text" id="txtNome" placeholder=" " value="{{dados['nome']}}" autofocus />
+                        <label for="txtNome">Nome</label>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6 col-xl-4">
+                        <input class="form-control" type="text" id="txtCPF" placeholder=" " value="{{dados['cpf']}}" />
+                        <label for="txtCPF">CPF</label>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6 col-xl-4">
+                        <input class="form-control" type="date" id="txtDataNascimento" placeholder=" " value="{{dados['dt_nascimento'] | dataGravacao}}" />
+                        <label for="txtDataNascimento">Data de Nascimento</label>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-danger">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

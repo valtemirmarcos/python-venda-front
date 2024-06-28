@@ -1,0 +1,49 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Quitanda online :: Fechar Compra {% endblock %}
+{% block content %}
+<main class="flex-fill">
+    <div class="container">
+        <h1>Confira os Itens</h1>
+        <h3>Confira os itens e clique em <b>Continuar</b> para prosseguir para a <b>seleção do endereço de entrega</b>.</h3>
+        <ul class="list-group mb-3">
+            {% for compra in compras["itens"] %}
+                <li class="list-group-item py-3">
+                    <div class="row g-3">
+                        <div class="col-4 col-md-3 col-lg-2">
+                            <a href="#">
+                                <img src="{{compra['fotoCapa']}}" class="img-thumbnail">
+                            </a>
+                        </div>
+                        <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                            <h4>
+                                <b><a href="#" class="text-decoration-none text-danger">
+                                    {{compra['produto']}}</a></b>
+                            </h4>
+                            <h5>
+                                {{compra['descricao']}}
+                                <br>
+                                <b>
+                                    {{compra['qtde']}} {{compra['medida']}}(s) <br>
+                                    {{compra['valor_total'] | currency}}
+                                </b>
+                            </h5>
+                        </div>                            
+                    </div>
+                </li>
+            {% endfor %}
+            <li class="list-group-item pt-3 pb-0">
+                <div class="text-end">
+                    <h4 class="text-dark mb-3">
+                        Valor Total: {{compras['total'] | currency}}
+                    </h4>
+                    <a href="{{ url_for('carrinho.carrinho')}}" class="btn btn-outline-success btn-lg mb-3">
+                        Voltar ao Carrinho
+                    </a>
+                    <a href="{{ url_for('carrinho.fecharEndereco')}}" class="btn btn-danger btn-lg ms-2 mb-3">Continuar</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</main>
+{% endblock %}

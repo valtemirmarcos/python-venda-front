@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ url_for('static', filename='img/favicon//android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon//favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/favicon//favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon//favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/favicon//manifest.json') }}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='img/favicon/ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" defer></script>
+    <link href="{{ url_for('static', filename='css/estilos.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="d-flex flex-column wrapper">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger border-bottom shadow-sm mb-3">
+            <div class="container">
+                <a class="navbar-brand" href=""><b>Quitanda Online</b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" >
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white active" aria-current="page" href="/">Principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ url_for('contato.contato') }}">Contato</a>
+                        </li>
+                    </ul>
+                    <div class="align-self-end">
+                        <ul class="navbar-nav">
+                            {% if "dados_usuario" not in session or  "nome" not in session["dados_usuario"] or session["dados_usuario"]['nome']=='' %}
+                            <li class="nav-item">
+                                <a href="{{ url_for('cliente.cadastro') }}" class="nav-link text-white">Quero me cadastrar</a>
+                            </li>
+                            
+                                <li class="nav-item">
+                                    <a href="{{ url_for('auth.login') }}" class="nav-link text-white">Entrar</a>
+                                </li>
+                            {% else %}
+                                {% if session.get('dados_usuario') %}
+                                    <li class="nav-item">
+                                        <a href="{{url_for('cliente.clientePedidos')}}" class="nav-link text-white">Olá {{session["dados_usuario"]['nome']}}</a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">Sair</a>
+                                </li>
+
+                            {% endif %}
+                            <li class="nav-item">
+                                <span class="badge rounded-pill bg-light text-danger position-absolute ms-4 mt-0" title="5 produto(s) no carrinho">
+                                    <small>{{session['contadorItens']}}</small>
+                                </span>
+                                <a href="{{ url_for('carrinho.carrinho') }}" class="nav-link text-white">
+                                    <i class="bi-cart" style="font-size:24px;line-height: 24px;"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% block content %}{% endblock %}
+        <footer class="border-top text-muted bg-light">
+            <div class="container">
+                <div class="row py-3">
+                    <div class="col-12 col-md-4 text-center">
+                        &copy; 2020 Quitanda Online Ltda ME<br>
+                        Rua Virtual Inexistente, 171, Compulandia/PC<br>
+                        CNPJ 99.999.999/0001-99
+                    </div>
+                    <div class="col-12 col-md-4 text-center">
+                        <a href="privacidade.html" class="text-decoration-none text-dark">
+                            Politica de privacidade
+                        </a><br/>
+                        <a href="termos.html" class="text-decoration-none text-dark">
+                            Termos de uso
+                        </a><br/>
+                        <a href="quemsomos.html" class="text-decoration-none text-dark">
+                            Quem Somos
+                        </a><br/>
+                        <a href="trocas.html" class="text-decoration-none text-dark">
+                            Trocas e Devoluções
+                        </a><br/>
+                    </div>
+                    <div class="col-12 col-md-4 text-center">
+                        <a href="contato.html" class="text-decoration-none text-dark">
+                            Contato pelo Site
+                        </a><br/>
+                        <a href="mailto:email@dominio.com" class="text-decoration-none text-dark">
+                            email@dominio.com
+                        </a><br/>
+                        Telefone<a href="phone:28999900000" class="text-decoration-none text-dark">
+                            (28)99999-0000
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+<script src="{{url_for('static',filename='js/funcoes.js')}}"></script>
+{% block js %}{% endblock %}
+</html>

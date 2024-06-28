@@ -1,0 +1,23 @@
+<div class="list-group">
+    <a href="{{url_for('cliente.clienteDados')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clienteDados') %}bg-danger text-light{% endif %}">
+        <i class="bi-person fs-6"></i> Dados Pessoais
+    </a>
+    <a href="{{url_for('cliente.clienteContatos')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clienteContatos') %}bg-danger text-light{% endif %}">
+        <i class="bi-mailbox fs-6"></i> Contatos
+    </a>
+    <a href="{{url_for('cliente.clienteEndereco')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clienteEndereco') %}bg-danger text-light{% endif %}">
+        <i class="bi-house-door fs-6"></i> Endereço
+    </a>
+    <a href="{{url_for('cliente.clientePedidos')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clientePedidos') %}bg-danger text-light{% endif %}">
+        <i class="bi-truck fs-6"></i> Pedidos
+    </a>
+    <a href="{{url_for('cliente.clienteFavoritos')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clienteFavoritos') %}bg-danger text-light{% endif %}">
+        <i class="bi-heart fs-6"></i> Favoritos
+    </a>
+    <a href="{{url_for('cliente.clienteSenha')}}" class="list-group-item list-group-item-action {% if request.path == url_for('cliente.clienteSenha') %}bg-danger text-light{% endif %}">
+        <i class="bi-lock fs-6"></i> Alterar Senha
+    </a>
+    <a href="{{ url_for('auth.logout') }}" class="list-group-item list-group-item-action {% if request.path == url_for('auth.logout') %}bg-danger text-light{% endif %}">
+        <i class="bi-door-open fs-6"></i> Sair
+    </a>
+</div>
