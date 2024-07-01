@@ -10,17 +10,22 @@
                 {% include 'menu_cliente.html' %}
             </div>
             <div class="col-8">
-                <form action="">
+                {% if erro %}
+                    <p class="mt-3 text-danger">
+                        {{erro}}
+                    </p>
+                {% endif %}
+                <form action="{{url_for('cliente.salvarClientesDados')}}" method="post">
                     <div class="form-floating mb-3">
-                        <input class="form-control" type="text" id="txtNome" placeholder=" " value="{{dados['nome']}}" autofocus />
+                        <input class="form-control" type="text" id="txtNome" name="txtNome" placeholder=" " value="{{dados['nome']}}" autofocus />
                         <label for="txtNome">Nome</label>
                     </div>
                     <div class="form-floating mb-3 col-md-6 col-xl-4">
-                        <input class="form-control" type="text" id="txtCPF" placeholder=" " value="{{dados['cpf']}}" />
+                        <input class="form-control" type="text" id="txtCPF" name="txtCPF" placeholder=" " value="{{dados['cpf']}}" />
                         <label for="txtCPF">CPF</label>
                     </div>
                     <div class="form-floating mb-3 col-md-6 col-xl-4">
-                        <input class="form-control" type="date" id="txtDataNascimento" placeholder=" " value="{{dados['dt_nascimento'] | dataGravacao}}" />
+                        <input class="form-control" type="date" id="txtDataNascimento" name="txtDataNascimento" placeholder=" " value="{{dados['dt_nascimento'] | dataGravacao}}" />
                         <label for="txtDataNascimento">Data de Nascimento</label>
                     </div>
                     <button type="submit" class="btn btn-lg btn-danger">Salvar</button>

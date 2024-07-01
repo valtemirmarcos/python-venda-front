@@ -10,26 +10,34 @@
                 {% include 'menu_cliente.html' %}
             </div>
             <div class="col-8">
-                <form action="">
+                <form action="{{url_for('cliente.salvarEndereco')}}" method="post">
                     <div class="form-floating mb-3 col-md-6 col-lg-4">
-                        <input class="form-control" type="text" id="txtCEP" placeholder=" " value="{{dados['cep']}}"  autofocus />
+                        <input class="form-control" type="text" id="txtCEP" name="txtCEP" placeholder=" " value="{{dados['cep']}}"  autofocus />
                         <label for="txtCEP">CEP</label>
                     </div>
                     <div class="mb-3 col-md-6 col-lg-8">
-                        <textarea class="form-control text-muted bg-light text" style="height: 58px; font-size: 14px;">{{dados['logradouro']}}</textarea>
+                        <textarea class="form-control text-muted bg-light text" id="txtLogradouro" name="txtLogradouro" style="height: 58px; font-size: 14px;">{{dados['logradouro']}}</textarea>
                     </div> 
                     <div class="form-floating mb-3 col-md-4">
-                        <input class="form-control" type="text" id="txtNumero" placeholder=" " value="{{dados['numero']}}" autofocus />
+                        <input class="form-control" type="text" id="txtNumero" name="txtNumero" placeholder=" " value="{{dados['numero']}}" autofocus />
                         <label for="txtNumero">Número</label>
                     </div>
                     <div class="form-floating mb-3 col-md-8">
-                        <input class="form-control" type="text" id="txtComplemento" placeholder=" " value="{{dados['complemento']}}" autofocus />
+                        <input class="form-control" type="text" id="txtComplemento" name="txtComplemento" placeholder=" " value="{{dados['complemento']}}" autofocus />
                         <label for="txtComplemento">Complemento</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" type="text" id="txtReferencia" placeholder=" " value="{{dados['referencia']}}" autofocus />
+                        <input class="form-control" type="text" id="txtReferencia" name="txtReferencia" placeholder=" " value="{{dados['referencia']}}" autofocus />
                         <label for="txtReferencia">Ponto de Referência</label>
                     </div>     
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="text" id="txtCidade" name="txtCidade" placeholder=" " value="{{dados['cidade']}}" autofocus />
+                        <label for="txtCidade">Cidade</label>
+                    </div>   
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="text" id="txtUf" name="txtUf" placeholder=" " value="{{dados['uf']}}" autofocus />
+                        <label for="txtUf">UF</label>
+                    </div> 
                     <button type="submit" class="btn btn-lg btn-danger">Salvar</button>                      
                 </form>
             </div>
