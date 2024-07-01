@@ -10,13 +10,13 @@
                 {% include 'menu_cliente.html' %}
             </div>
             <div class="col-8">
-                <form action="">
+                <form action="{{url_for('cliente.salvarClientesContatos')}}" method="post">
                     <div class="form-floating mb-3 col-md-8">
                         <input class="form-control" type="email" id="txtEmail" placeholder=" " value="{{dados['email']}}" autofocus/>
                         <label for="txtEmail">E-mail</label>
                     </div>
                     <div class="form-floating mb-3 col-md-6">
-                        <input class="form-control" type="text" id="txtTelefone" placeholder=" " value="{{dados['fone']}}"  />
+                        <input class="form-control" type="text" id="txtTelefone" name="txtTelefone" placeholder=" " value="{{dados['fone']}}"  />
                         <label for="txtTelefone">Telefone</label>
                     </div>     
                     <button type="submit" class="btn btn-lg btn-danger">Salvar</button>                       

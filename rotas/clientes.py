@@ -16,10 +16,24 @@ def clientePedidos():
 @cliente_bp.route('/dados')
 def clienteDados():
     dados = usuarios_ctl.exibirDadosUsuarioLogado().json()
+    
     if 'status' not in dados or dados['status'] != 'success':
         return render_template('erro404.html')
-    
     return render_template('cliente_dados.html',dados=dados['data'])
+
+@cliente_bp.route('/salvarDados', methods=['POST'])
+def salvarClientesDados():
+    jsonDados = {
+        "nome_completo": request.form.get('txtNome'),
+        "cpf": request.form.get('txtCPF'),
+        "dt_nascimento": request.form.get('txtDataNascimento')
+    }
+    salvarClientesDados = usuarios_ctl.salvarClientesDados(jsonDados).json()
+    if salvarClientesDados['status']!='success':
+        return render_template('cliente_dados.html', erro=alvarClientesDados['data'])
+
+    # return redirect(url_for('cliente.clienteDados',dados=salvarClientesDados['data']))
+    return render_template('cliente_dados.html',dados=salvarClientesDados['data'])
 
 @cliente_bp.route('/contatos')
 def clienteContatos():
@@ -29,6 +43,18 @@ def clienteContatos():
 
     return render_template('cliente_contatos.html',dados=dados['data'])
 
+@cliente_bp.route('/salvarContatos', methods=['POST'])
+def salvarClientesContatos():
+    jsonDados = {
+        "fone": request.form.get('txtTelefone')
+    }
+    salvarClientesContatos = usuarios_ctl.salvarClientesDados(jsonDados).json()
+    if salvarClientesContatos['status']!='success':
+        return render_template('cliente_contatos.html', erro=salvarClientesContatos['data'])
+
+    # return redirect(url_for('cliente.clienteDados',dados=salvarClientesDados['data']))
+    return render_template('cliente_contatos.html',dados=salvarClientesContatos['data'])
+
 @cliente_bp.route('/endereco')
 def clienteEndereco():
     dados = usuarios_ctl.exibirDadosUsuarioLogado().json()
@@ -36,6 +62,22 @@ def clienteEndereco():
         return render_template('erro404.html')
 
     return render_template('cliente_endereco.html',dados=dados['data'])
+
+@cliente_bp.route('/salvarEndereco',methods=['POST'])
+def salvarEndereco():
+    jsonEndereco = {
+        "cep": request.form.get('txtCEP'),
+        "logradouro":request.form.get('txtLogradouro'),
+        "numero":request.form.get('txtNumero'),
+        "referencia":request.form.get('txtReferencia'),
+        "cidade":request.form.get('txtCidade'),
+        "uf":request.form.get('txtUf'),
+        "complemento":request.form.get('txtComplemento')
+    }
+    salvarClientesEnderecos = usuarios_ctl.salvarClientesEnderecos(jsonEndereco).json()
+
+    return render_template('cliente_endereco.html',dados=salvarClientesEnderecos['data'])
+
 
 @cliente_bp.route('/favoritos')
 def clienteFavoritos():

@@ -92,3 +92,25 @@ class usuariosController:
         }
         response = requests.post(urlContato, json=json, headers=headers)
         return response
+    
+    def salvarClientesDados(self, json):
+        token = session['auth_token']
+        urlSalvarClientesDados = f"{os.getenv('URL_API')}/usuarios/alterarDadosPessoais"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {token}'
+        }
+        response = requests.post(urlSalvarClientesDados, json=json, headers=headers)
+
+        return response
+
+    def salvarClientesEnderecos(self, json):
+        token = session['auth_token']
+        urlSalvarClientesEnderecos = f"{os.getenv('URL_API')}/usuarios/alterarEndereco"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {token}'
+        }
+        response = requests.post(urlSalvarClientesEnderecos, json=json, headers=headers)
+
+        return response
