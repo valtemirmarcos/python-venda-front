@@ -50,6 +50,7 @@ def logout():
     session.pop('auth_token', None)
     session.pop('dados_usuario', None)
     session.pop('logado', None)
+    # session.pop('urlApi', None)
     return redirect(url_for('auth.login'))
 
 

@@ -8,14 +8,18 @@ from functools import wraps
 
 produtos_bp = Blueprint('produtos',__name__,template_folder='templates')
 
+urlApi = os.getenv('URL_API')
+
 @produtos_bp.route('/')
 def index():
+   
     jsonUsuario = {}
     if 'auth_token' in session and session['auth_token']:
         usuarios_ctl = usuariosController()
         dados_usuario = usuarios_ctl.exibirDadosUsuarioLogado().json()
         session['dados_usuario'] = dados_usuario['data']
         session['contadorItens']=0
+        
         if session.get('dados_carrinho'):
             session['contadorItens'] = len(session['dados_carrinho'])
         

@@ -45,3 +45,47 @@
     </div>
 </main>
 {% endblock %}
+
+{% block js %}
+    <script>
+        var urlAPi = "{{session['urlApi']}}";
+        console.log(urlAPi);
+        $(function(){
+            console.log("endereco");
+        });
+        $(document).on('blur',"#txtCEP",(evt)=>{
+            evt.preventDefault();
+            evt.stopPropagation();
+            // console.log("ok");
+            var cep = $("#txtCEP").val();
+            executarApi(urlAPi, cep);
+
+            console.log(urlAPi);
+        });
+        function executarApi(url, cep){
+            console.log(url+"/usuarios/consultaCep?cep="+cep);
+            $.ajax({
+                url: url+"/usuarios/consultaCep?cep="+cep, 
+                type: "GET",
+                dataType: "json", 
+                contentType: "application/json", 
+                success: function(response) {
+                    if (response.status != 'success'){
+                        alert("cep nao encontrado");
+                        return false;
+                    }
+                    var dados = response.data;
+                    $("#txtLogradouro").val(dados.street);
+                    $("#txtCidade").val(dados.city);
+                    $("#txtUf").val(dados.uf);
+                    console.log(response)
+
+                },
+                error: function(error) {
+                    // Manipula erros na requisição (exibir mensagem de erro)
+                    console.error("Erro ao enviar dados:", error);
+                }
+            });
+        }
+    </script>
+{% endblock %}
